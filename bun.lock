@@ -10,6 +10,7 @@
       "version": "1.0.0",
       "dependencies": {
         "@anthropic-ai/sdk": "^0.52.0",
+        "@google/generative-ai": "^0.24.1",
         "@supabase/supabase-js": "^2.49.0",
         "hono": "^4.7.0",
         "zod": "^3.24.0",
@@ -22,6 +23,8 @@
   },
   "packages": {
     "@anthropic-ai/sdk": ["@anthropic-ai/sdk@0.52.0", "", { "bin": { "anthropic-ai-sdk": "bin/cli" } }, "sha512-d4c+fg+xy9e46c8+YnrrgIQR45CZlAi7PwdzIfDXDM6ACxEZli1/fxhURsq30ZpMZy6LvSkr41jGq5aF5TD7rQ=="],
+
+    "@google/generative-ai": ["@google/generative-ai@0.24.1", "", {}, "sha512-MqO+MLfM6kjxcKoy0p1wRzG3b4ZZXtPI+z2IE26UogS2Cm/XHO+7gGRBh6gcJsOiIVoH93UwKvW4HdgiOZCy9Q=="],
 
     "@repowind/api": ["@repowind/api@workspace:apps/api"],
 
