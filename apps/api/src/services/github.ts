@@ -22,7 +22,7 @@ export async function getRecentCommits(owner: string, repo: string) {
     { headers }
   )
   const data = await res.json()
-  return data
+  return Array.isArray(data) ? data : []
 }
 
 // Get file tree of a repo
@@ -32,5 +32,5 @@ export async function getRepoTree(owner: string, repo: string) {
     { headers }
   )
   const data = await res.json()
-  return data
+  return Array.isArray(data.tree) ? data.tree : []
 }
