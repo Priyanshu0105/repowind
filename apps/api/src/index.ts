@@ -1,7 +1,9 @@
 import { Hono } from "hono"
 import { logger } from "hono/logger"
 import { cors } from "hono/cors"
-import { getUserRepos } from "./services/github"
+import { getRepoTree, getUserRepos ,getRecentCommits } from "./services/github"
+import { generateBrief } from "./services/gemini"
+
 
 const app = new Hono()
 
@@ -14,7 +16,17 @@ app.use("*", cors({
 app.get("/health", (c) => {
   return c.json({ status: "ok", message: "RepoWind API is running" })
 })
+app.get("/api/brief/:owner/:repo", async (c) => {
+  const { owner, repo } = c.req.param()
+  console.log("API KEY:", process.env.GEMINI_API_KEY ? "loaded" : "missing")
+  const [commits, tree] = await Promise.all([
+    getRecentCommits(owner, repo),
+    getRepoTree(owner, repo),
+  ])
 
+  const brief = await generateBrief({ name: repo, commits, tree })
+  return c.json({ brief })
+})
 app.get("/api/repos", async (c) => {
   const repos = await getUserRepos()
   return c.json(repos)
