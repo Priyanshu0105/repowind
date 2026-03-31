@@ -1,5 +1,6 @@
 import { Hono } from "hono"
 import { createToken, verifyToken } from "../lib/session"
+import { getCookie } from "hono/cookie"
 
 type Env = {
   Variables: {
@@ -69,19 +70,17 @@ auth.get("/github/callback", async (c) => {
   })
 
   // Set cookie manually via header
-  c.header(
-    "Set-Cookie",
-    `token=${jwt}; HttpOnly; Path=/; Max-Age=${60 * 60 * 24 * 7}; SameSite=Lax`
-  )
+const isProduction = process.env.NODE_ENV === "production"
+c.header("Set-Cookie", `token=${jwt}; HttpOnly; Path=/; Max-Age=${60 * 60 * 24 * 7}; SameSite=${isProduction ? "None; Secure" : "Lax"}`)
 
   return c.redirect(`${WEB_URL}/dashboard`)
 })
 
 // Get current logged in user
 auth.get("/me", async (c) => {
-  const cookie = c.req.header("cookie") || ""
-  const match = cookie.match(/token=([^;]+)/)
-  const token = match ? match[1] : null
+const token = getCookie(c, "token")
+if (!token) return c.json({ user: null })
+
 
   if (!token) return c.json({ user: null })
 
