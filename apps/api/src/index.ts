@@ -3,7 +3,7 @@ import { logger } from "hono/logger"
 import { cors } from "hono/cors"
 import { getRepoTree, getUserRepos ,getRecentCommits } from "./services/github"
 import { generateBrief } from "./services/gemini"
-
+import auth from "./routes/auth"
 
 const app = new Hono()
 
@@ -12,7 +12,7 @@ app.use("*", cors({
   origin: "http://localhost:3000",
   credentials: true,
 }))
-
+app.route("/auth", auth);
 app.get("/health", (c) => {
   return c.json({ status: "ok", message: "RepoWind API is running" })
 })
