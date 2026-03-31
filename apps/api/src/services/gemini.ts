@@ -1,4 +1,5 @@
 import { GoogleGenerativeAI } from "@google/generative-ai"
+import type { Annotation } from "./scanner"
 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || "")
 const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash-lite" })
@@ -7,6 +8,7 @@ export async function generateBrief(repoData: {
   name: string
   commits: any[]
   tree: any[]
+  annotations: Annotation[]
 }) {
   try {
     const commits = repoData.commits
@@ -19,13 +21,19 @@ export async function generateBrief(repoData: {
       .map((f: any) => f.path)
       .join(", ")
 
+    const annotationText = repoData.annotations.length > 0
+      ? repoData.annotations
+          .map(a => `- [${a.type.toUpperCase()}] ${a.file}:${a.line} → ${a.comment}`)
+          .join("\n")
+      : "None found"
+
     const prompt = `
 You are RepoWind, an expert senior software engineer helping a developer resume work.
 
 Your job:
 - Be concise, specific, and actionable
 - Avoid generic statements
-- Infer intent from commits + files
+- Infer intent from commits + files + annotations
 
 Repo Name: ${repoData.name}
 
@@ -34,6 +42,9 @@ ${commits}
 
 Project Files:
 ${files}
+
+Developer Annotations:
+${annotationText}
 
 Return STRICTLY in this format:
 
