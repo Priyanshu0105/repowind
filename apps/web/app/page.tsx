@@ -5,7 +5,7 @@ import { Badge } from "@/components/ui/badge"
 import { Separator } from "@/components/ui/separator"
 import { Wind, Zap, GitBranch, Search, ArrowRight, Lock } from "lucide-react"
 
-const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080"
+const API = process.env.API_URL 
 
 const FEATURES = [
   {
