@@ -11,8 +11,8 @@ const auth = new Hono<Env>()
 
 const GITHUB_CLIENT_ID = process.env.GITHUB_CLIENT_ID!
 const GITHUB_CLIENT_SECRET = process.env.GITHUB_CLIENT_SECRET!
-const WEB_URL = process.env.WEB_URL || "http://localhost:3000"
-const API_URL = process.env.API_URL || "http://localhost:8080"
+const WEB_URL = process.env.WEB_URL
+const API_URL = process.env.API_URL 
 const isProduction = process.env.NODE_ENV === "production"
 
 auth.get("/github", (c) => {
