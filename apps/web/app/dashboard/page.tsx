@@ -10,7 +10,7 @@ import { ScrollArea } from "@/components/ui/scroll-area"
 import { Skeleton } from "@/components/ui/skeleton"
 import { LayoutDashboard, History, Settings, RefreshCw, LogOut, Wind } from "lucide-react"
 
-const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080"
+const API = process.env.API_URL
 
 interface User { username: string; avatarUrl: string }
 interface Repo {
